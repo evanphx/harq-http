@@ -24,6 +24,7 @@ public:
   enum State { eReadSize, eReadMessage };
 
 private:
+  int id_;
   Socket sock_;
   ev::io read_w_;
   ev::io write_w_;
@@ -58,14 +59,20 @@ private:
 public:
   /*** methods ***/
 
-  Connection(Server& s, int fd);
+  Connection(Server& s, int id, int fd);
   ~Connection();
 
   Buffer& buffer() {
     return buffer_;
   }
 
+  int id() {
+    return id_;
+  }
+
   bool write(wire::Message& msg);
+
+  bool write(const std::string& str);
 
   void on_readable(ev::io& w, int revents);
   void on_queue_readable(ev::io& w, int revents);

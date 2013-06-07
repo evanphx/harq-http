@@ -36,6 +36,7 @@ void protobuf_ShutdownFile_http_2eproto();
 
 class Header;
 class Request;
+class Response;
 
 enum Header_Key {
   Header_Key_HOST = 0,
@@ -160,24 +161,17 @@ class Header : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional uint32 standard_key = 1;
-  inline bool has_standard_key() const;
-  inline void clear_standard_key();
-  static const int kStandardKeyFieldNumber = 1;
-  inline ::google::protobuf::uint32 standard_key() const;
-  inline void set_standard_key(::google::protobuf::uint32 value);
-
-  // optional .http.Header.Key key = 2;
+  // optional .http.Header.Key key = 1;
   inline bool has_key() const;
   inline void clear_key();
-  static const int kKeyFieldNumber = 2;
+  static const int kKeyFieldNumber = 1;
   inline ::http::Header_Key key() const;
   inline void set_key(::http::Header_Key value);
 
-  // optional string custom_key = 3;
+  // optional string custom_key = 2;
   inline bool has_custom_key() const;
   inline void clear_custom_key();
-  static const int kCustomKeyFieldNumber = 3;
+  static const int kCustomKeyFieldNumber = 2;
   inline const ::std::string& custom_key() const;
   inline void set_custom_key(const ::std::string& value);
   inline void set_custom_key(const char* value);
@@ -186,10 +180,10 @@ class Header : public ::google::protobuf::Message {
   inline ::std::string* release_custom_key();
   inline void set_allocated_custom_key(::std::string* custom_key);
 
-  // required string value = 4;
+  // required string value = 3;
   inline bool has_value() const;
   inline void clear_value();
-  static const int kValueFieldNumber = 4;
+  static const int kValueFieldNumber = 3;
   inline const ::std::string& value() const;
   inline void set_value(const ::std::string& value);
   inline void set_value(const char* value);
@@ -200,8 +194,6 @@ class Header : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:http.Header)
  private:
-  inline void set_has_standard_key();
-  inline void clear_has_standard_key();
   inline void set_has_key();
   inline void clear_has_key();
   inline void set_has_custom_key();
@@ -211,13 +203,12 @@ class Header : public ::google::protobuf::Message {
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::google::protobuf::uint32 standard_key_;
-  int key_;
   ::std::string* custom_key_;
   ::std::string* value_;
+  int key_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
 
   friend void  protobuf_AddDesc_http_2eproto();
   friend void protobuf_AssignDesc_http_2eproto();
@@ -323,6 +314,13 @@ class Request : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 version_minor() const;
   inline void set_version_minor(::google::protobuf::uint32 value);
 
+  // required uint32 stream_id = 8;
+  inline bool has_stream_id() const;
+  inline void clear_stream_id();
+  static const int kStreamIdFieldNumber = 8;
+  inline ::google::protobuf::uint32 stream_id() const;
+  inline void set_stream_id(::google::protobuf::uint32 value);
+
   // optional .http.Request.Method method = 3;
   inline bool has_method() const;
   inline void clear_method();
@@ -384,6 +382,8 @@ class Request : public ::google::protobuf::Message {
   inline void clear_has_version_major();
   inline void set_has_version_minor();
   inline void clear_has_version_minor();
+  inline void set_has_stream_id();
+  inline void clear_has_stream_id();
   inline void set_has_method();
   inline void clear_has_method();
   inline void set_has_custom_method();
@@ -397,14 +397,15 @@ class Request : public ::google::protobuf::Message {
 
   ::google::protobuf::uint32 version_major_;
   ::google::protobuf::uint32 version_minor_;
+  ::google::protobuf::uint32 stream_id_;
+  int method_;
   ::std::string* custom_method_;
   ::std::string* url_;
   ::google::protobuf::RepeatedPtrField< ::http::Header > headers_;
   ::std::string* body_;
-  int method_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
 
   friend void  protobuf_AddDesc_http_2eproto();
   friend void protobuf_AssignDesc_http_2eproto();
@@ -413,6 +414,126 @@ class Request : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static Request* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class Response : public ::google::protobuf::Message {
+ public:
+  Response();
+  virtual ~Response();
+
+  Response(const Response& from);
+
+  inline Response& operator=(const Response& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Response& default_instance();
+
+  void Swap(Response* other);
+
+  // implements Message ----------------------------------------------
+
+  Response* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Response& from);
+  void MergeFrom(const Response& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required uint32 stream_id = 1;
+  inline bool has_stream_id() const;
+  inline void clear_stream_id();
+  static const int kStreamIdFieldNumber = 1;
+  inline ::google::protobuf::uint32 stream_id() const;
+  inline void set_stream_id(::google::protobuf::uint32 value);
+
+  // required uint32 status = 2;
+  inline bool has_status() const;
+  inline void clear_status();
+  static const int kStatusFieldNumber = 2;
+  inline ::google::protobuf::uint32 status() const;
+  inline void set_status(::google::protobuf::uint32 value);
+
+  // repeated .http.Header headers = 3;
+  inline int headers_size() const;
+  inline void clear_headers();
+  static const int kHeadersFieldNumber = 3;
+  inline const ::http::Header& headers(int index) const;
+  inline ::http::Header* mutable_headers(int index);
+  inline ::http::Header* add_headers();
+  inline const ::google::protobuf::RepeatedPtrField< ::http::Header >&
+      headers() const;
+  inline ::google::protobuf::RepeatedPtrField< ::http::Header >*
+      mutable_headers();
+
+  // optional bytes body = 4;
+  inline bool has_body() const;
+  inline void clear_body();
+  static const int kBodyFieldNumber = 4;
+  inline const ::std::string& body() const;
+  inline void set_body(const ::std::string& value);
+  inline void set_body(const char* value);
+  inline void set_body(const void* value, size_t size);
+  inline ::std::string* mutable_body();
+  inline ::std::string* release_body();
+  inline void set_allocated_body(::std::string* body);
+
+  // @@protoc_insertion_point(class_scope:http.Response)
+ private:
+  inline void set_has_stream_id();
+  inline void clear_has_stream_id();
+  inline void set_has_status();
+  inline void clear_has_status();
+  inline void set_has_body();
+  inline void clear_has_body();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 stream_id_;
+  ::google::protobuf::uint32 status_;
+  ::google::protobuf::RepeatedPtrField< ::http::Header > headers_;
+  ::std::string* body_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+
+  friend void  protobuf_AddDesc_http_2eproto();
+  friend void protobuf_AssignDesc_http_2eproto();
+  friend void protobuf_ShutdownFile_http_2eproto();
+
+  void InitAsDefaultInstance();
+  static Response* default_instance_;
+};
 // ===================================================================
 
 
@@ -420,37 +541,15 @@ class Request : public ::google::protobuf::Message {
 
 // Header
 
-// optional uint32 standard_key = 1;
-inline bool Header::has_standard_key() const {
+// optional .http.Header.Key key = 1;
+inline bool Header::has_key() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void Header::set_has_standard_key() {
+inline void Header::set_has_key() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void Header::clear_has_standard_key() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void Header::clear_standard_key() {
-  standard_key_ = 0u;
-  clear_has_standard_key();
-}
-inline ::google::protobuf::uint32 Header::standard_key() const {
-  return standard_key_;
-}
-inline void Header::set_standard_key(::google::protobuf::uint32 value) {
-  set_has_standard_key();
-  standard_key_ = value;
-}
-
-// optional .http.Header.Key key = 2;
-inline bool Header::has_key() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void Header::set_has_key() {
-  _has_bits_[0] |= 0x00000002u;
-}
 inline void Header::clear_has_key() {
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000001u;
 }
 inline void Header::clear_key() {
   key_ = 0;
@@ -465,15 +564,15 @@ inline void Header::set_key(::http::Header_Key value) {
   key_ = value;
 }
 
-// optional string custom_key = 3;
+// optional string custom_key = 2;
 inline bool Header::has_custom_key() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
 inline void Header::set_has_custom_key() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000002u;
 }
 inline void Header::clear_has_custom_key() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void Header::clear_custom_key() {
   if (custom_key_ != &::google::protobuf::internal::kEmptyString) {
@@ -535,15 +634,15 @@ inline void Header::set_allocated_custom_key(::std::string* custom_key) {
   }
 }
 
-// required string value = 4;
+// required string value = 3;
 inline bool Header::has_value() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void Header::set_has_value() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000004u;
 }
 inline void Header::clear_has_value() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void Header::clear_value() {
   if (value_ != &::google::protobuf::internal::kEmptyString) {
@@ -653,15 +752,37 @@ inline void Request::set_version_minor(::google::protobuf::uint32 value) {
   version_minor_ = value;
 }
 
-// optional .http.Request.Method method = 3;
-inline bool Request::has_method() const {
+// required uint32 stream_id = 8;
+inline bool Request::has_stream_id() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void Request::set_has_method() {
+inline void Request::set_has_stream_id() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void Request::clear_has_method() {
+inline void Request::clear_has_stream_id() {
   _has_bits_[0] &= ~0x00000004u;
+}
+inline void Request::clear_stream_id() {
+  stream_id_ = 0u;
+  clear_has_stream_id();
+}
+inline ::google::protobuf::uint32 Request::stream_id() const {
+  return stream_id_;
+}
+inline void Request::set_stream_id(::google::protobuf::uint32 value) {
+  set_has_stream_id();
+  stream_id_ = value;
+}
+
+// optional .http.Request.Method method = 3;
+inline bool Request::has_method() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Request::set_has_method() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Request::clear_has_method() {
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void Request::clear_method() {
   method_ = 0;
@@ -678,13 +799,13 @@ inline void Request::set_method(::http::Request_Method value) {
 
 // optional string custom_method = 4;
 inline bool Request::has_custom_method() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void Request::set_has_custom_method() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void Request::clear_has_custom_method() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void Request::clear_custom_method() {
   if (custom_method_ != &::google::protobuf::internal::kEmptyString) {
@@ -748,13 +869,13 @@ inline void Request::set_allocated_custom_method(::std::string* custom_method) {
 
 // required string url = 5;
 inline bool Request::has_url() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void Request::set_has_url() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void Request::clear_has_url() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void Request::clear_url() {
   if (url_ != &::google::protobuf::internal::kEmptyString) {
@@ -843,13 +964,13 @@ Request::mutable_headers() {
 
 // optional bytes body = 7;
 inline bool Request::has_body() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
 inline void Request::set_has_body() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000080u;
 }
 inline void Request::clear_has_body() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void Request::clear_body() {
   if (body_ != &::google::protobuf::internal::kEmptyString) {
@@ -899,6 +1020,149 @@ inline ::std::string* Request::release_body() {
   }
 }
 inline void Request::set_allocated_body(::std::string* body) {
+  if (body_ != &::google::protobuf::internal::kEmptyString) {
+    delete body_;
+  }
+  if (body) {
+    set_has_body();
+    body_ = body;
+  } else {
+    clear_has_body();
+    body_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// -------------------------------------------------------------------
+
+// Response
+
+// required uint32 stream_id = 1;
+inline bool Response::has_stream_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Response::set_has_stream_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Response::clear_has_stream_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Response::clear_stream_id() {
+  stream_id_ = 0u;
+  clear_has_stream_id();
+}
+inline ::google::protobuf::uint32 Response::stream_id() const {
+  return stream_id_;
+}
+inline void Response::set_stream_id(::google::protobuf::uint32 value) {
+  set_has_stream_id();
+  stream_id_ = value;
+}
+
+// required uint32 status = 2;
+inline bool Response::has_status() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Response::set_has_status() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Response::clear_has_status() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Response::clear_status() {
+  status_ = 0u;
+  clear_has_status();
+}
+inline ::google::protobuf::uint32 Response::status() const {
+  return status_;
+}
+inline void Response::set_status(::google::protobuf::uint32 value) {
+  set_has_status();
+  status_ = value;
+}
+
+// repeated .http.Header headers = 3;
+inline int Response::headers_size() const {
+  return headers_.size();
+}
+inline void Response::clear_headers() {
+  headers_.Clear();
+}
+inline const ::http::Header& Response::headers(int index) const {
+  return headers_.Get(index);
+}
+inline ::http::Header* Response::mutable_headers(int index) {
+  return headers_.Mutable(index);
+}
+inline ::http::Header* Response::add_headers() {
+  return headers_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::http::Header >&
+Response::headers() const {
+  return headers_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::http::Header >*
+Response::mutable_headers() {
+  return &headers_;
+}
+
+// optional bytes body = 4;
+inline bool Response::has_body() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Response::set_has_body() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Response::clear_has_body() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Response::clear_body() {
+  if (body_ != &::google::protobuf::internal::kEmptyString) {
+    body_->clear();
+  }
+  clear_has_body();
+}
+inline const ::std::string& Response::body() const {
+  return *body_;
+}
+inline void Response::set_body(const ::std::string& value) {
+  set_has_body();
+  if (body_ == &::google::protobuf::internal::kEmptyString) {
+    body_ = new ::std::string;
+  }
+  body_->assign(value);
+}
+inline void Response::set_body(const char* value) {
+  set_has_body();
+  if (body_ == &::google::protobuf::internal::kEmptyString) {
+    body_ = new ::std::string;
+  }
+  body_->assign(value);
+}
+inline void Response::set_body(const void* value, size_t size) {
+  set_has_body();
+  if (body_ == &::google::protobuf::internal::kEmptyString) {
+    body_ = new ::std::string;
+  }
+  body_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Response::mutable_body() {
+  set_has_body();
+  if (body_ == &::google::protobuf::internal::kEmptyString) {
+    body_ = new ::std::string;
+  }
+  return body_;
+}
+inline ::std::string* Response::release_body() {
+  clear_has_body();
+  if (body_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = body_;
+    body_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Response::set_allocated_body(::std::string* body) {
   if (body_ != &::google::protobuf::internal::kEmptyString) {
     delete body_;
   }

@@ -22,8 +22,8 @@ public:
   void set_nonblock();
 
   WriteStatus write(const wire::Message& msg);
-  WriteStatus write(const std::string val);
-  WriteStatus write_with_size(const std::string val);
+  WriteStatus write(const std::string& val);
+  WriteStatus write_with_size(const std::string& val);
 
   WriteStatus flush() {
     return writes_.flush(fd);

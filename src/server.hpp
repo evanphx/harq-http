@@ -17,9 +17,11 @@
 class Connection;
 
 typedef std::list<Connection*> Connections;
+typedef std::map<int, Connection*> ConnectionMap;
 
 namespace http {
   class Request;
+  class Response;
 }
 
 enum DataStatus {
@@ -40,9 +42,7 @@ class Server {
   ev::sig sigterm_watcher_;
   ev::check cleanup_watcher_;
 
-  Connections connections_;
-  Connections replicas_;
-  Connections taps_;
+  ConnectionMap connections_;
 
   Connections closing_connections_;
 
@@ -56,18 +56,7 @@ public:
     return loop_;
   }
 
-  void remove_connection(Connection* con) {
-    connections_.remove(con);
-    closing_connections_.push_back(con);
-  }
-
-  void add_replica(Connection* con) {
-    replicas_.push_back(con);
-  }
-
-  void add_tap(Connection* con) {
-    taps_.push_back(con);
-  }
+  void remove_connection(Connection* con);
 
   uint64_t next_id() {
     return ++next_id_;
@@ -89,6 +78,8 @@ public:
 
   void connect(std::string host, int c_port);
   void deliver(http::Request& req_);
+
+  void send_reply(http::Response& rep);
 };
 
 

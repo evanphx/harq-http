@@ -28,6 +28,8 @@
 
 #include "option.hpp"
 
+#include "action.hpp"
+
 #define EVBACKEND EVFLAG_AUTO
 
 #ifdef __linux
@@ -158,14 +160,16 @@ void Server::on_connection(ev::io& w, int revents) {
     return;
   }
 
-  Connection* connection = new Connection(ref(this), fd);
+  int id = next_id();
+
+  Connection* connection = new Connection(ref(this), id, fd);
 
   if(connection == NULL) {
     close(fd);
     return;
   }
 
-  connections_.push_back(connection);
+  connections_[id] = connection;
 
   connection->start();
 }
@@ -183,6 +187,34 @@ void Server::deliver(http::Request& req) {
 
   queue_->write(msg);
 }
+
+void Server::send_reply(http::Response& rep) {
+  Connection* con = connections_[rep.stream_id()];
+
+  std::stringstream out;
+  out << "HTTP/1.1 " << rep.status() << " Did it\r\n";
+
+  for(int i = 0; i < rep.headers_size(); i++) {
+    const http::Header& h = rep.headers(i);
+    out << h.custom_key() << ": " << h.value() << "\r\n";
+  }
+
+  out << "Content-Length: " << rep.body().size() << "\r\n";
+
+  out << "\r\n";
+
+  std::cout << "<DEBUG>\n" << out.str() << "\n</DEBUG>\n";
+
+  con->write(out.str());
+  con->write(rep.body());
+}
+
+
+void Server::remove_connection(Connection* con) {
+  connections_.erase(con->id());
+  closing_connections_.push_back(con);
+}
+
 
 void Server::connect(std::string host, int c_port) {
   int s, rv;
@@ -219,7 +251,9 @@ void Server::connect(std::string host, int c_port) {
 end:
   freeaddrinfo(servinfo);
 
-  Connection* con = new Connection(ref(this), s);
+  int id = next_id();
+
+  Connection* con = new Connection(ref(this), id, s);
 
   if(con == NULL) {
     close(s);
@@ -228,7 +262,33 @@ end:
 
   queue_ = con;
 
-  connections_.push_back(con);
+  connections_[id] = con;
 
   con->start_queue();
+
+  wire::Action act;
+  act.set_type(eMakeTransientQueue);
+  act.set_payload("/harq-http");
+
+  wire::Message msg;
+  msg.set_destination("+");
+  msg.set_payload(act.SerializeAsString());
+
+  con->write(msg);
+
+  act.set_type(eMakeTransientQueue);
+  act.set_payload("/harq-http/reply");
+
+  msg.set_destination("+");
+  msg.set_payload(act.SerializeAsString());
+
+  con->write(msg);
+
+  act.set_type(eSubscribe);
+  act.set_payload("/harq-http/reply");
+
+  msg.set_destination("+");
+  msg.set_payload(act.SerializeAsString());
+
+  con->write(msg);
 }

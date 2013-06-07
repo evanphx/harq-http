@@ -28,6 +28,9 @@ const ::google::protobuf::Descriptor* Request_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Request_reflection_ = NULL;
 const ::google::protobuf::EnumDescriptor* Request_Method_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* Response_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Response_reflection_ = NULL;
 
 }  // namespace
 
@@ -39,8 +42,7 @@ void protobuf_AssignDesc_http_2eproto() {
       "http.proto");
   GOOGLE_CHECK(file != NULL);
   Header_descriptor_ = file->message_type(0);
-  static const int Header_offsets_[4] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Header, standard_key_),
+  static const int Header_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Header, key_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Header, custom_key_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Header, value_),
@@ -58,9 +60,10 @@ void protobuf_AssignDesc_http_2eproto() {
       sizeof(Header));
   Header_Key_descriptor_ = Header_descriptor_->enum_type(0);
   Request_descriptor_ = file->message_type(1);
-  static const int Request_offsets_[7] = {
+  static const int Request_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, version_major_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, version_minor_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, stream_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, method_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, custom_method_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, url_),
@@ -79,6 +82,24 @@ void protobuf_AssignDesc_http_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Request));
   Request_Method_descriptor_ = Request_descriptor_->enum_type(0);
+  Response_descriptor_ = file->message_type(2);
+  static const int Response_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, stream_id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, status_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, headers_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, body_),
+  };
+  Response_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      Response_descriptor_,
+      Response::default_instance_,
+      Response_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(Response));
 }
 
 namespace {
@@ -95,6 +116,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     Header_descriptor_, &Header::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Request_descriptor_, &Request::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    Response_descriptor_, &Response::default_instance());
 }
 
 }  // namespace
@@ -104,6 +127,8 @@ void protobuf_ShutdownFile_http_2eproto() {
   delete Header_reflection_;
   delete Request::default_instance_;
   delete Request_reflection_;
+  delete Response::default_instance_;
+  delete Response_reflection_;
 }
 
 void protobuf_AddDesc_http_2eproto() {
@@ -113,22 +138,27 @@ void protobuf_AddDesc_http_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\nhttp.proto\022\004http\"\215\001\n\006Header\022\024\n\014standar"
-    "d_key\030\001 \001(\r\022\035\n\003key\030\002 \001(\0162\020.http.Header.K"
-    "ey\022\022\n\ncustom_key\030\003 \001(\t\022\r\n\005value\030\004 \002(\t\"+\n"
-    "\003Key\022\010\n\004HOST\020\000\022\n\n\006ACCEPT\020\001\022\016\n\nUSER_AGENT"
-    "\020\002\"\352\001\n\007Request\022\025\n\rversion_major\030\001 \002(\r\022\025\n"
-    "\rversion_minor\030\002 \002(\r\022$\n\006method\030\003 \001(\0162\024.h"
-    "ttp.Request.Method\022\025\n\rcustom_method\030\004 \001("
-    "\t\022\013\n\003url\030\005 \002(\t\022\035\n\007headers\030\006 \003(\0132\014.http.H"
-    "eader\022\014\n\004body\030\007 \001(\014\":\n\006Method\022\n\n\006DELETE\020"
-    "\000\022\007\n\003GET\020\001\022\010\n\004HEAD\020\002\022\010\n\004POST\020\003\022\007\n\003PUT\020\004", 399);
+    "\n\nhttp.proto\022\004http\"w\n\006Header\022\035\n\003key\030\001 \001("
+    "\0162\020.http.Header.Key\022\022\n\ncustom_key\030\002 \001(\t\022"
+    "\r\n\005value\030\003 \002(\t\"+\n\003Key\022\010\n\004HOST\020\000\022\n\n\006ACCEP"
+    "T\020\001\022\016\n\nUSER_AGENT\020\002\"\375\001\n\007Request\022\025\n\rversi"
+    "on_major\030\001 \002(\r\022\025\n\rversion_minor\030\002 \002(\r\022\021\n"
+    "\tstream_id\030\010 \002(\r\022$\n\006method\030\003 \001(\0162\024.http."
+    "Request.Method\022\025\n\rcustom_method\030\004 \001(\t\022\013\n"
+    "\003url\030\005 \002(\t\022\035\n\007headers\030\006 \003(\0132\014.http.Heade"
+    "r\022\014\n\004body\030\007 \001(\014\":\n\006Method\022\n\n\006DELETE\020\000\022\007\n"
+    "\003GET\020\001\022\010\n\004HEAD\020\002\022\010\n\004POST\020\003\022\007\n\003PUT\020\004\"Z\n\010R"
+    "esponse\022\021\n\tstream_id\030\001 \002(\r\022\016\n\006status\030\002 \002"
+    "(\r\022\035\n\007headers\030\003 \003(\0132\014.http.Header\022\014\n\004bod"
+    "y\030\004 \001(\014", 487);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "http.proto", &protobuf_RegisterTypes);
   Header::default_instance_ = new Header();
   Request::default_instance_ = new Request();
+  Response::default_instance_ = new Response();
   Header::default_instance_->InitAsDefaultInstance();
   Request::default_instance_->InitAsDefaultInstance();
+  Response::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_http_2eproto);
 }
 
@@ -165,7 +195,6 @@ const Header_Key Header::Key_MAX;
 const int Header::Key_ARRAYSIZE;
 #endif  // _MSC_VER
 #ifndef _MSC_VER
-const int Header::kStandardKeyFieldNumber;
 const int Header::kKeyFieldNumber;
 const int Header::kCustomKeyFieldNumber;
 const int Header::kValueFieldNumber;
@@ -187,7 +216,6 @@ Header::Header(const Header& from)
 
 void Header::SharedCtor() {
   _cached_size_ = 0;
-  standard_key_ = 0u;
   key_ = 0;
   custom_key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   value_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -232,7 +260,6 @@ Header* Header::New() const {
 
 void Header::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    standard_key_ = 0u;
     key_ = 0;
     if (has_custom_key()) {
       if (custom_key_ != &::google::protobuf::internal::kEmptyString) {
@@ -255,26 +282,10 @@ bool Header::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional uint32 standard_key = 1;
+      // optional .http.Header.Key key = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &standard_key_)));
-          set_has_standard_key();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(16)) goto parse_key;
-        break;
-      }
-
-      // optional .http.Header.Key key = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_key:
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -282,17 +293,17 @@ bool Header::MergePartialFromCodedStream(
           if (::http::Header_Key_IsValid(value)) {
             set_key(static_cast< ::http::Header_Key >(value));
           } else {
-            mutable_unknown_fields()->AddVarint(2, value);
+            mutable_unknown_fields()->AddVarint(1, value);
           }
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_custom_key;
+        if (input->ExpectTag(18)) goto parse_custom_key;
         break;
       }
 
-      // optional string custom_key = 3;
-      case 3: {
+      // optional string custom_key = 2;
+      case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_custom_key:
@@ -304,12 +315,12 @@ bool Header::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_value;
+        if (input->ExpectTag(26)) goto parse_value;
         break;
       }
 
-      // required string value = 4;
-      case 4: {
+      // required string value = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_value:
@@ -343,33 +354,28 @@ bool Header::MergePartialFromCodedStream(
 
 void Header::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional uint32 standard_key = 1;
-  if (has_standard_key()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->standard_key(), output);
-  }
-
-  // optional .http.Header.Key key = 2;
+  // optional .http.Header.Key key = 1;
   if (has_key()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      2, this->key(), output);
+      1, this->key(), output);
   }
 
-  // optional string custom_key = 3;
+  // optional string custom_key = 2;
   if (has_custom_key()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->custom_key().data(), this->custom_key().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      3, this->custom_key(), output);
+      2, this->custom_key(), output);
   }
 
-  // required string value = 4;
+  // required string value = 3;
   if (has_value()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->value().data(), this->value().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      4, this->value(), output);
+      3, this->value(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -380,35 +386,30 @@ void Header::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* Header::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional uint32 standard_key = 1;
-  if (has_standard_key()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->standard_key(), target);
-  }
-
-  // optional .http.Header.Key key = 2;
+  // optional .http.Header.Key key = 1;
   if (has_key()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      2, this->key(), target);
+      1, this->key(), target);
   }
 
-  // optional string custom_key = 3;
+  // optional string custom_key = 2;
   if (has_custom_key()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->custom_key().data(), this->custom_key().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->custom_key(), target);
+        2, this->custom_key(), target);
   }
 
-  // required string value = 4;
+  // required string value = 3;
   if (has_value()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->value().data(), this->value().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->value(), target);
+        3, this->value(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -422,27 +423,20 @@ int Header::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional uint32 standard_key = 1;
-    if (has_standard_key()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->standard_key());
-    }
-
-    // optional .http.Header.Key key = 2;
+    // optional .http.Header.Key key = 1;
     if (has_key()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->key());
     }
 
-    // optional string custom_key = 3;
+    // optional string custom_key = 2;
     if (has_custom_key()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->custom_key());
     }
 
-    // required string value = 4;
+    // required string value = 3;
     if (has_value()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -476,9 +470,6 @@ void Header::MergeFrom(const ::google::protobuf::Message& from) {
 void Header::MergeFrom(const Header& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_standard_key()) {
-      set_standard_key(from.standard_key());
-    }
     if (from.has_key()) {
       set_key(from.key());
     }
@@ -505,14 +496,13 @@ void Header::CopyFrom(const Header& from) {
 }
 
 bool Header::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000008) != 0x00000008) return false;
+  if ((_has_bits_[0] & 0x00000004) != 0x00000004) return false;
 
   return true;
 }
 
 void Header::Swap(Header* other) {
   if (other != this) {
-    std::swap(standard_key_, other->standard_key_);
     std::swap(key_, other->key_);
     std::swap(custom_key_, other->custom_key_);
     std::swap(value_, other->value_);
@@ -563,6 +553,7 @@ const int Request::Method_ARRAYSIZE;
 #ifndef _MSC_VER
 const int Request::kVersionMajorFieldNumber;
 const int Request::kVersionMinorFieldNumber;
+const int Request::kStreamIdFieldNumber;
 const int Request::kMethodFieldNumber;
 const int Request::kCustomMethodFieldNumber;
 const int Request::kUrlFieldNumber;
@@ -588,6 +579,7 @@ void Request::SharedCtor() {
   _cached_size_ = 0;
   version_major_ = 0u;
   version_minor_ = 0u;
+  stream_id_ = 0u;
   method_ = 0;
   custom_method_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   url_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -638,6 +630,7 @@ void Request::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     version_major_ = 0u;
     version_minor_ = 0u;
+    stream_id_ = 0u;
     method_ = 0;
     if (has_custom_method()) {
       if (custom_method_ != &::google::protobuf::internal::kEmptyString) {
@@ -777,6 +770,22 @@ bool Request::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(64)) goto parse_stream_id;
+        break;
+      }
+
+      // required uint32 stream_id = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_stream_id:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &stream_id_)));
+          set_has_stream_id();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -845,6 +854,11 @@ void Request::SerializeWithCachedSizes(
       7, this->body(), output);
   }
 
+  // required uint32 stream_id = 8;
+  if (has_stream_id()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(8, this->stream_id(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -903,6 +917,11 @@ void Request::SerializeWithCachedSizes(
         7, this->body(), target);
   }
 
+  // required uint32 stream_id = 8;
+  if (has_stream_id()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(8, this->stream_id(), target);
+  }
+
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -926,6 +945,13 @@ int Request::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->version_minor());
+    }
+
+    // required uint32 stream_id = 8;
+    if (has_stream_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->stream_id());
     }
 
     // optional .http.Request.Method method = 3;
@@ -997,6 +1023,9 @@ void Request::MergeFrom(const Request& from) {
     if (from.has_version_minor()) {
       set_version_minor(from.version_minor());
     }
+    if (from.has_stream_id()) {
+      set_stream_id(from.stream_id());
+    }
     if (from.has_method()) {
       set_method(from.method());
     }
@@ -1026,7 +1055,7 @@ void Request::CopyFrom(const Request& from) {
 }
 
 bool Request::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000013) != 0x00000013) return false;
+  if ((_has_bits_[0] & 0x00000027) != 0x00000027) return false;
 
   for (int i = 0; i < headers_size(); i++) {
     if (!this->headers(i).IsInitialized()) return false;
@@ -1038,6 +1067,7 @@ void Request::Swap(Request* other) {
   if (other != this) {
     std::swap(version_major_, other->version_major_);
     std::swap(version_minor_, other->version_minor_);
+    std::swap(stream_id_, other->stream_id_);
     std::swap(method_, other->method_);
     std::swap(custom_method_, other->custom_method_);
     std::swap(url_, other->url_);
@@ -1054,6 +1084,346 @@ void Request::Swap(Request* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = Request_descriptor_;
   metadata.reflection = Request_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int Response::kStreamIdFieldNumber;
+const int Response::kStatusFieldNumber;
+const int Response::kHeadersFieldNumber;
+const int Response::kBodyFieldNumber;
+#endif  // !_MSC_VER
+
+Response::Response()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void Response::InitAsDefaultInstance() {
+}
+
+Response::Response(const Response& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void Response::SharedCtor() {
+  _cached_size_ = 0;
+  stream_id_ = 0u;
+  status_ = 0u;
+  body_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+Response::~Response() {
+  SharedDtor();
+}
+
+void Response::SharedDtor() {
+  if (body_ != &::google::protobuf::internal::kEmptyString) {
+    delete body_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void Response::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Response::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Response_descriptor_;
+}
+
+const Response& Response::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_http_2eproto();
+  return *default_instance_;
+}
+
+Response* Response::default_instance_ = NULL;
+
+Response* Response::New() const {
+  return new Response;
+}
+
+void Response::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    stream_id_ = 0u;
+    status_ = 0u;
+    if (has_body()) {
+      if (body_ != &::google::protobuf::internal::kEmptyString) {
+        body_->clear();
+      }
+    }
+  }
+  headers_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool Response::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required uint32 stream_id = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &stream_id_)));
+          set_has_stream_id();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_status;
+        break;
+      }
+
+      // required uint32 status = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_status:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &status_)));
+          set_has_status();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_headers;
+        break;
+      }
+
+      // repeated .http.Header headers = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_headers:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_headers()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_headers;
+        if (input->ExpectTag(34)) goto parse_body;
+        break;
+      }
+
+      // optional bytes body = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_body:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_body()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void Response::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required uint32 stream_id = 1;
+  if (has_stream_id()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->stream_id(), output);
+  }
+
+  // required uint32 status = 2;
+  if (has_status()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->status(), output);
+  }
+
+  // repeated .http.Header headers = 3;
+  for (int i = 0; i < this->headers_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, this->headers(i), output);
+  }
+
+  // optional bytes body = 4;
+  if (has_body()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      4, this->body(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* Response::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required uint32 stream_id = 1;
+  if (has_stream_id()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->stream_id(), target);
+  }
+
+  // required uint32 status = 2;
+  if (has_status()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->status(), target);
+  }
+
+  // repeated .http.Header headers = 3;
+  for (int i = 0; i < this->headers_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        3, this->headers(i), target);
+  }
+
+  // optional bytes body = 4;
+  if (has_body()) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        4, this->body(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int Response::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required uint32 stream_id = 1;
+    if (has_stream_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->stream_id());
+    }
+
+    // required uint32 status = 2;
+    if (has_status()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->status());
+    }
+
+    // optional bytes body = 4;
+    if (has_body()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->body());
+    }
+
+  }
+  // repeated .http.Header headers = 3;
+  total_size += 1 * this->headers_size();
+  for (int i = 0; i < this->headers_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->headers(i));
+  }
+
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Response::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const Response* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const Response*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void Response::MergeFrom(const Response& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  headers_.MergeFrom(from.headers_);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_stream_id()) {
+      set_stream_id(from.stream_id());
+    }
+    if (from.has_status()) {
+      set_status(from.status());
+    }
+    if (from.has_body()) {
+      set_body(from.body());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void Response::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Response::CopyFrom(const Response& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Response::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+
+  for (int i = 0; i < headers_size(); i++) {
+    if (!this->headers(i).IsInitialized()) return false;
+  }
+  return true;
+}
+
+void Response::Swap(Response* other) {
+  if (other != this) {
+    std::swap(stream_id_, other->stream_id_);
+    std::swap(status_, other->status_);
+    headers_.Swap(&other->headers_);
+    std::swap(body_, other->body_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata Response::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = Response_descriptor_;
+  metadata.reflection = Response_reflection_;
   return metadata;
 }
 

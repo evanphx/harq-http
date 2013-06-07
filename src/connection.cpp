@@ -67,8 +67,9 @@ int cb_done(http_parser* p) {
   return 0;
 }
 
-Connection::Connection(Server& s, int fd)
-  : sock_(fd)
+Connection::Connection(Server& s, int id, int fd)
+  : id_(id)
+  , sock_(fd)
   , read_w_(s.loop())
   , write_w_(s.loop())
   , open_(true)
@@ -223,6 +224,7 @@ option<http::Request_Method> req_enum(unsigned char n) {
 }
 
 void Connection::flush() {
+  req_.set_stream_id(id_);
   req_.set_version_major(parser_.http_major);
   req_.set_version_minor(parser_.http_minor);
 
@@ -326,7 +328,13 @@ void Connection::on_queue_readable(ev::io& w, int revents) {
 }
 
 void Connection::handle_message(const wire::Message& msg) {
+  http::Response rep;
 
+  if(!rep.ParseFromString(msg.payload())) {
+    std::cerr << "Get malformed response\n";
+  }
+
+  server_.send_reply(rep);
 }
 
 void Connection::on_readable(ev::io& w, int revents) {
@@ -388,5 +396,20 @@ bool Connection::write(wire::Message& msg) {
     debugs << "Starting writable watcher\n";
     return true;
   }
+}
 
+bool Connection::write(const std::string& str) {
+  switch(sock_.write(str)) {
+  case eOk:
+    return true;
+  case eFailure:
+    debugs << "Error writing to socket\n";
+    signal_cleanup();
+    return false;
+  case eWouldBlock:
+    writer_started_ = true;
+    write_w_.start(sock_.fd, EV_WRITE);
+    debugs << "Starting writable watcher\n";
+    return true;
+  }
 }

@@ -11,7 +11,7 @@
 #include <fcntl.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 
-WriteStatus Socket::write(const std::string val) {
+WriteStatus Socket::write(const std::string& val) {
   writes_.add(val);
 
   WriteStatus stat = writes_.flush(fd);
@@ -31,7 +31,7 @@ WriteStatus Socket::write(const std::string val) {
   return stat;
 }
 
-WriteStatus Socket::write_with_size(const std::string val) {
+WriteStatus Socket::write_with_size(const std::string& val) {
   union sz {
     char buf[4];
     uint32_t i;
