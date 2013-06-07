@@ -1,0 +1,36 @@
+package http;
+
+message Header {
+  enum Key {
+    HOST = 0;
+    ACCEPT = 1;
+    USER_AGENT = 2;
+  }
+
+  optional uint32 standard_key = 1;
+  optional Key key = 2;
+  optional string custom_key = 3;
+  required string value = 4;
+}
+
+message Request {
+  enum Method {
+    DELETE = 0;
+    GET = 1;
+    HEAD = 2;
+    POST = 3;
+    PUT = 4;
+  }
+
+  required uint32 version_major = 1;
+  required uint32 version_minor = 2;
+
+  optional Method method = 3;
+  optional string custom_method = 4;
+
+  required string url = 5;
+
+  repeated Header headers = 6;
+
+  optional bytes body = 7;
+}

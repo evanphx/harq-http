@@ -1,0 +1,21 @@
+src/buffer.o: src/buffer.cpp src/buffer.hpp
+src/config.o: src/config.cpp src/config.hpp
+src/connection.o: src/connection.cpp src/util.hpp src/server.hpp \
+  src/debugs.hpp src/safe_ref.hpp src/option.hpp src/connection.hpp \
+  src/harq.hpp src/buffer.hpp src/socket.hpp src/write_set.hpp \
+  src/http_parser.h src/http.pb.h src/action.hpp
+src/debugs.o: src/debugs.cpp src/debugs.hpp
+src/http.pb.o: src/http.pb.cpp src/http.pb.h
+src/main.o: src/main.cpp src/util.hpp src/server.hpp src/debugs.hpp \
+  src/safe_ref.hpp src/option.hpp src/connection.hpp src/harq.hpp \
+  src/buffer.hpp src/socket.hpp src/write_set.hpp src/http_parser.h \
+  src/http.pb.h src/config.hpp
+src/server.o: src/server.cpp src/debugs.hpp src/util.hpp src/server.hpp \
+  src/safe_ref.hpp src/option.hpp src/connection.hpp src/harq.hpp \
+  src/buffer.hpp src/socket.hpp src/write_set.hpp src/http_parser.h \
+  src/http.pb.h src/flags.hpp src/types.hpp
+src/socket.o: src/socket.cpp src/harq.hpp src/socket.hpp \
+  src/write_set.hpp src/debugs.hpp
+src/util.o: src/util.cpp src/util.hpp src/server.hpp src/debugs.hpp \
+  src/safe_ref.hpp src/option.hpp
+src/write_set.o: src/write_set.cpp src/harq.hpp src/write_set.hpp

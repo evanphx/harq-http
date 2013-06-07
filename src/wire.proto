@@ -1,0 +1,76 @@
+package wire;
+
+message Message {
+  required string destination = 1;
+  required bytes payload = 2;
+
+  optional uint64 id = 3;
+  optional uint32 flags = 4;
+
+  optional uint64 confirm_id = 5;
+}
+
+message Action {
+  required int32 type = 1;
+  optional string payload = 2;
+  optional uint64 id = 3;
+}
+
+message BondRequest {
+  required string queue = 1;
+  required string destination = 2;
+}
+
+message ConnectionConfigure {
+  optional bool tap = 1;
+  optional bool ack = 2;
+  optional bool confirm = 3;
+  optional uint32 inflight = 4;
+}
+
+message MessageRange {
+  required int32 start = 1;
+  required int32 count = 2;
+}
+
+message Queue {
+  required int32 size = 1;
+  repeated MessageRange ranges = 2;
+}
+
+message Stat {
+  required string name = 1;
+  required bool exists = 2;
+  optional uint32 transient_size = 3;
+  optional uint32 durable_size = 4;
+}
+
+message ReplicaAction {
+  enum Type {
+    eStart = 0;
+    eReserve = 1;
+  }
+  required Type type = 1;
+  optional bytes payload = 2;
+}
+
+message QueueError {
+  required string queue = 1;
+  optional string error = 2;
+}
+
+message QueueDeclaration {
+  enum Type {
+    eBroadcast = 0;
+    eTransient = 1;
+    eDurable = 2;
+  }
+
+  required string name = 1;
+  required Type type = 2;
+}
+
+message QueueConfiguration {
+  repeated QueueDeclaration queues = 1;
+}
+
